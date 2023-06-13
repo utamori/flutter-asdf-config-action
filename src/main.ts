@@ -1,6 +1,5 @@
 import { getInput, exportVariable } from '@actions/core'
 import { readFileSync } from "node:fs";
-import { resolve } from 'node:path';
 
 async function run(): Promise<void> {
 
@@ -13,9 +12,9 @@ async function run(): Promise<void> {
     if (line.trim() === '') continue;
 
     const [name, versionStatus] = line.split(' ');
-    
+
     if (name === 'flutter') {
-      const [version,channel] =  versionStatus.split('-');
+      const [version, channel] = versionStatus.split('-');
       exportVariable('FLUTTER_VERSION', version)
       exportVariable('FLUTTER_CHANNEL', channel)
       break;
