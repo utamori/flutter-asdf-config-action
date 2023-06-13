@@ -1,19 +1,28 @@
-import * as core from '@actions/core'
-import {wait} from './wait'
+import { getInput, exportVariable } from '@actions/core'
+import { readFileSync } from "node:fs";
+import { resolve } from 'node:path';
 
 async function run(): Promise<void> {
-  try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+  const path = getInput('path');
 
-    core.setOutput('time', new Date().toTimeString())
-  } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message)
+  const content = readFileSync(path, { encoding: 'utf8' });
+
+
+  for (const line of content.split('\n')) {
+    if (line.trim() === '') continue;
+
+    const [name, versionStatus] = line.split(' ');
+    
+    if (name === 'flutter') {
+      const [version,channel] =  versionStatus.split('-');
+      exportVariable('FLUTTER_VERSION', version)
+      exportVariable('FLUTTER_CHANNEL', channel)
+      break;
+    }
+
   }
+
 }
 
 run()
