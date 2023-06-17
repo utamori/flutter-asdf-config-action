@@ -2,6 +2,8 @@
 An action that parses an [ASDF](https://asdf-vm.com/) config file into environment variables which 
 can then be used to configure the [flutter-action](https://github.com/subosito/flutter-action).
 
+This action was created with reference to the [Flutter FVM config action](https://github.com/kuhnroyal/flutter-fvm-config-action)available in the GitHub Marketplace.
+
 ## Usage
 
 ### Basic usage
