@@ -27,10 +27,16 @@ function run() {
                 continue;
             const [name, versionStatus] = line.split(' ');
             if (name === 'flutter') {
-                const [version, channel] = versionStatus.split('-');
-                (0, core_1.exportVariable)('FLUTTER_VERSION', version);
-                (0, core_1.exportVariable)('FLUTTER_CHANNEL', channel);
-                break;
+                if (versionStatus.includes('-stable')) {
+                    (0, core_1.exportVariable)('FLUTTER_VERSION', versionStatus.replace(/-stable$/, ''));
+                    (0, core_1.exportVariable)('FLUTTER_CHANNEL', 'stable');
+                    break;
+                }
+                else if (versionStatus.includes('.pre-beta')) {
+                    (0, core_1.exportVariable)('FLUTTER_VERSION', versionStatus.replace(/\.pre-beta$/, ''));
+                    (0, core_1.exportVariable)('FLUTTER_CHANNEL', 'beta');
+                    break;
+                }
             }
         }
     });
